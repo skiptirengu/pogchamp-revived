@@ -41,38 +41,62 @@
   });
 
   /**
+   * @param {HTMLImageElement} element
+   */
+  function replaceEmoteImageSource(element) {
+    if (element.src !== PogChampions.Size1x) {
+      element.src = PogChampions.Size1x;
+    }
+    if (element.srcset !== PogChampionsSourceSet) {
+      element.srcset = PogChampionsSourceSet;
+    }
+  }
+
+  /**
    * @param {HTMLElement} element
    */
   function tryReplaceChatLineNode(element) {
     if (element === null) return;
 
-    /** @type {HTMLImageElement} */
-    const emoteElement = element.querySelector(Selectors.PogChamp);
-    if (emoteElement === null) return;
+    const emoteElements = element.querySelectorAll(Selectors.PogChamp);
+    if (!emoteElements || !emoteElements.length) return;
 
-    emoteElement.src = PogChampions.Size1x;
-    emoteElement.srcset = PogChampionsSourceSet;
+    emoteElements.forEach((emote) => replaceEmoteImageSource(emote));
     return true;
   }
 
   /**
-   * @param {NodeList} nodes
+   * @param {HTMLElement} element
    */
-  function replaceChatLineNodes(nodes) {
-    nodes.forEach((node) => {
-      /** @type {HTMLElement} */
-      const element = node;
-      if (
-        element.classList &&
-        element.classList.contains(Selectors.ChatLineMessage)
-      ) {
+  function isChatLineElement(element) {
+    return (
+      element.classList &&
+      element.classList.value.toLowerCase().includes(Selectors.ChatLineMessage)
+    );
+  }
+
+  /**
+   * @param {MutationRecord} mutation
+   */
+  function replaceChatLineNodes(mutation) {
+    /** @type {HTMLElement} */
+    let element = mutation.target;
+
+    if (isChatLineElement(element)) {
+      return tryReplaceChatLineNode(element);
+    }
+
+    mutation.addedNodes.forEach((node) => {
+      element = node;
+
+      if (isChatLineElement(element)) {
         return tryReplaceChatLineNode(node);
       }
     });
   }
 
   /**
-   * @param {NodeList} nodes
+   * @param {MutationRecord} mutation
    */
   function replaceEmotePopoutNodes(nodes) {}
 
@@ -84,7 +108,7 @@
   function dispatchMutationForEachChild(mutations, observer, dispatcher) {
     for (const mutation of mutations) {
       if (mutation.type !== "childList") continue;
-      if (dispatcher(mutation.addedNodes, observer) === true) break;
+      if (dispatcher(mutation, observer) === true) break;
     }
   }
 
@@ -134,7 +158,8 @@
       listenToChildMutations(
         chatRoom.querySelector(Selectors.Chat),
         replaceChatLineNodes,
-        "[PogChamp Revived] unable to load chat container"
+        "[PogChamp Revived] unable to load chat container",
+        { childList: true, subtree: true }
       );
 
       // Emote popout observer
