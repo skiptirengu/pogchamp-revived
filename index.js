@@ -7,9 +7,10 @@
 // @grant           none
 // @version         1.68.419
 // @author          midnight_pretender
-// @downloadURL     https://gitcdn.xyz/repo/skiptirengu/pogchamp-revived/master/index.js
+// @downloadURL     https://raw.githubusercontent.com/skiptirengu/pogchamp-revived/master/index.js
+// @updateURL       https://gitcdn.xyz/cdn/skiptirengu/pogchamp-revived/master/index.js
 // @homepageURL     https://github.com/skiptirengu/pogchamp-revived
-// @run-at			    document-end
+// @run-at          document-end
 // ==/UserScript==
 
 (function () {
