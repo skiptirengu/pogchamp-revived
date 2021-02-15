@@ -15,9 +15,9 @@
 
 (function () {
   const PogChampions = Object.freeze({
-    Size1x: "https://image.prntscr.com/image/YClI5iQ3QE6947gP5Fq-ug.png",
-    Size2x: "https://image.prntscr.com/image/dIsmKUMHQL2ePixsTjMLUg.png",
-    Size4x: "https://image.prntscr.com/image/ciKCrQhCRGeF1EVQwrFnYw.png",
+    Size1x: "https://i.imgur.com/UAiFfHS.png",
+    Size2x: "https://i.imgur.com/2eLT50W.png",
+    Size4x: "https://i.imgur.com/JdTFJzc.png",
   });
 
   // https://example.com/1x.png 1x,https://example.com/2x.png 2x,https://example.com/4x.png 4x
